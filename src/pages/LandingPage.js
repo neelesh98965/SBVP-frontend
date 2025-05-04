@@ -77,7 +77,7 @@ const LandingPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('https://sbvp-backend-python-with-sqllite-a2rq.onrender.com//api/enquiry', formData);
+      await axios.post('https://sbvp-backend-python-with-sqllite-a2rq.onrender.com/api/enquiry', formData);
       alert('Enquiry submitted successfully!');
       setFormData({ name: '', phone: '', email: '', reason: '' });
     } catch (error) {
