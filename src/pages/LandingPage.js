@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Container,
@@ -66,6 +66,32 @@ const LandingPage = () => {
     email: '',
     reason: '',
   });
+  const [flippedCards, setFlippedCards] = useState({});
+
+  // Add initial flip animation for the first card
+  useEffect(() => {
+    // Flip the first card after a short delay
+    const timer1 = setTimeout(() => {
+      setFlippedCards(prev => ({ ...prev, 1: true }));
+    }, 1000);
+
+    // Flip it back after 1.5 seconds
+    const timer2 = setTimeout(() => {
+      setFlippedCards(prev => ({ ...prev, 1: false }));
+    }, 2500);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, []);
+
+  const handleCardClick = (cardId) => {
+    setFlippedCards(prev => ({
+      ...prev,
+      [cardId]: !prev[cardId]
+    }));
+  };
 
   const handleInputChange = (e) => {
     setFormData({
@@ -87,6 +113,69 @@ const LandingPage = () => {
 
   return (
     <div>
+      {/* Hero Section */}
+      <Box
+        sx={{
+          position: 'relative',
+          height: { xs: '60vh', md: '70vh' },
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundImage: 'url("/heroSectionBanner.jpg")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            filter: 'brightness(0.85)',
+            animation: 'zoomIn 20s ease-in-out infinite alternate',
+          },
+        }}
+      >
+        <Container 
+          maxWidth="lg" 
+          sx={{ 
+            height: '100%',
+            position: 'relative',
+            zIndex: 1,
+            display: 'flex',
+            alignItems: 'flex-end',
+            pb: { xs: 4, md: 8 },
+          }}
+        >
+          <Box 
+            sx={{ 
+              color: '#FFFFFF',
+              maxWidth: '700px',
+              animation: 'fadeInUp 1s ease-out',
+              mb: { xs: 2, md: 4 },
+              transform: 'translateY(50px)',
+            }}
+          >
+            <Typography
+              variant="h1"
+              component="h1"
+              sx={{
+                fontWeight: 900,
+                fontSize: { xs: '1.8rem', sm: '2.4rem', md: '3rem' },
+                lineHeight: 1.2,
+                mb: 2,
+                textShadow: '2px 2px 4px rgba(0,0,0,0.5)',
+                animation: 'slideInLeft 1s ease-out',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.2em'
+              }}
+            >
+              <div>PACKAGING THAT PROTECTS.</div>
+              <div>SERVICE THAT DELIVERS.</div>
+            </Typography>
+          </Box>
+        </Container>
+      </Box>
+
       {/* Banner Section */}
       <Box
         sx={{
@@ -94,16 +183,155 @@ const LandingPage = () => {
           color: 'white',
           py: 8,
           textAlign: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+          '&::before': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'linear-gradient(45deg, rgba(123, 86, 48, 0.05) 0%, rgba(123, 86, 48, 0.02) 100%)',
+            pointerEvents: 'none',
+          },
+          '&::after': {
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'radial-gradient(circle at 50% 50%, rgba(29, 78, 61, 0.03) 0%, transparent 70%)',
+            pointerEvents: 'none',
+          }
         }}
       >
-        <Container maxWidth="lg">
-          <Typography variant="h2" component="h1" gutterBottom>
-            Welcome to Our Company
-          </Typography>
-          <Typography variant="h5" component="h2" gutterBottom>
+        {/* Decorative Elements */}
+        <Box
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              width: '200px',
+              height: '200px',
+              background: 'rgba(29, 78, 61, 0.03)',
+              borderRadius: '50%',
+              top: '-100px',
+              left: '-100px',
+              animation: 'float 6s ease-in-out infinite',
+            },
+            '&::after': {
+              content: '""',
+              position: 'absolute',
+              width: '150px',
+              height: '150px',
+              background: 'rgba(123, 86, 48, 0.03)',
+              borderRadius: '50%',
+              bottom: '-75px',
+              right: '-75px',
+              animation: 'float 8s ease-in-out infinite reverse',
+            }
+          }}
+        />
+
+        <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1 }}>
+          <Box
+            sx={{
+              position: 'relative',
+              display: 'inline-block',
+              mb: 4,
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                width: '100%',
+                height: '2px',
+                background: 'linear-gradient(90deg, transparent, white, transparent)',
+                top: '-20px',
+                left: 0,
+              },
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                width: '100%',
+                height: '2px',
+                background: 'linear-gradient(90deg, transparent, white, transparent)',
+                bottom: '-20px',
+                left: 0,
+              }
+            }}
+          >
+            <Typography 
+              variant="h2" 
+              component="h1" 
+              gutterBottom
+              sx={{
+                fontWeight: 700,
+                color: 'white',
+                animation: 'fadeInUp 1s ease-out',
+                fontSize: { xs: '2.5rem', md: '3.5rem' },
+                letterSpacing: '0.5px',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.1)',
+              }}
+            >
+              Welcome to Our Company
+            </Typography>
+          </Box>
+          
+          <Typography 
+            variant="h5" 
+            component="h2" 
+            gutterBottom
+            sx={{
+              color: 'white',
+              opacity: 0.9,
+              animation: 'fadeInUp 1s ease-out 0.3s both',
+              maxWidth: '800px',
+              mx: 'auto',
+              position: 'relative',
+              '&::before': {
+                content: '"❖"',
+                position: 'absolute',
+                left: '-30px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'rgba(255,255,255,0.3)',
+                fontSize: '1.5rem',
+              },
+              '&::after': {
+                content: '"❖"',
+                position: 'absolute',
+                right: '-30px',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                color: 'rgba(255,255,255,0.3)',
+                fontSize: '1.5rem',
+              }
+            }}
+          >
             Your Trusted Partner in Quality Products
           </Typography>
         </Container>
+
+        {/* Add these keyframes at the top of your file, after the imports */}
+        <style>
+          {`
+            @keyframes float {
+              0%, 100% {
+                transform: translateY(0) rotate(0deg);
+              }
+              50% {
+                transform: translateY(-20px) rotate(5deg);
+              }
+            }
+          `}
+        </style>
       </Box>
 
       {/* About Preview Section */}
@@ -139,66 +367,118 @@ const LandingPage = () => {
           {previewProducts.map((product) => (
             <Card
               key={product.id}
+              onClick={() => handleCardClick(product.id)}
               sx={{
-                width: 260,
-                minHeight: 200,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                borderRadius: '10px',
-                boxShadow: '0 4px 24px rgba(140, 110, 83, 0.10)',
-                overflow: 'hidden',
-                position: 'relative',
-                background: `linear-gradient(120deg, #fff 80%, ${theme.palette.secondary.light} 100%)`,
-                mb: 2,
+                width: 300,
+                minHeight: 300,
+                perspective: '1000px',
+                cursor: 'pointer',
               }}
             >
-              <Box sx={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', bgcolor: '#f7f3ef', py: 1 }}>
-                <CardMedia
-                  component="img"
+              <Box
+                className="flip-card-inner"
+                sx={{
+                  position: 'relative',
+                  width: '100%',
+                  height: '100%',
+                  transition: 'transform 0.6s',
+                  transformStyle: 'preserve-3d',
+                  transform: flippedCards[product.id] ? 'rotateY(180deg)' : 'rotateY(0)',
+                }}
+              >
+                {/* Front of card (Content) */}
+                <Box
                   sx={{
-                    height: 70,
-                    width: 70,
-                    objectFit: 'contain',
-                    m: 0,
-                    p: 0,
-                    borderBottom: `2px solid ${theme.palette.secondary.main}`,
-                    background: 'none',
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    backfaceVisibility: 'hidden',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    borderRadius: '10px',
+                    background: `linear-gradient(120deg, #fff 80%, ${theme.palette.secondary.light} 100%)`,
+                    boxShadow: '0 4px 24px rgba(140, 110, 83, 0.10)',
                   }}
-                  image={product.image}
-                  alt={product.title}
-                  onError={e => { e.target.onerror = null; e.target.src = fallbackImg; }}
-                />
+                >
+                  <Box sx={{ position: 'relative', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', bgcolor: '#f7f3ef', py: 2 }}>
+                    <CardMedia
+                      component="img"
+                      sx={{
+                        height: 100,
+                        width: 100,
+                        objectFit: 'contain',
+                        m: 0,
+                        p: 0,
+                        borderBottom: `2px solid ${theme.palette.secondary.main}`,
+                        background: 'none',
+                      }}
+                      image={product.image}
+                      alt={product.title}
+                      onError={e => { e.target.onerror = null; e.target.src = fallbackImg; }}
+                    />
+                  </Box>
+                  <CardContent sx={{ flexGrow: 1, p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
+                    <Typography
+                      variant="h5"
+                      component="h2"
+                      sx={{
+                        color: theme.palette.primary.main,
+                        fontWeight: 700,
+                        textAlign: 'center',
+                        fontSize: '1.2rem',
+                      }}
+                    >
+                      {product.title}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        color: 'text.secondary',
+                        textAlign: 'center',
+                        fontSize: '0.9rem',
+                        lineHeight: 1.4,
+                        maxWidth: '90%',
+                      }}
+                    >
+                      {product.description}
+                    </Typography>
+                  </CardContent>
+                </Box>
+
+                {/* Back of card (Image only) */}
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    backfaceVisibility: 'hidden',
+                    transform: 'rotateY(180deg)',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    bgcolor: '#f7f3ef',
+                    borderRadius: '10px',
+                    overflow: 'hidden',
+                    p: '5px',
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    sx={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      m: 0,
+                      p: 0,
+                      borderRadius: '10px',
+                    }}
+                    image={product.image}
+                    alt={product.title}
+                    onError={e => { e.target.onerror = null; e.target.src = fallbackImg; }}
+                  />
+                </Box>
               </Box>
-              <CardContent sx={{ flexGrow: 1, p: 2 }}>
-                <Typography
-                  gutterBottom
-                  variant="h6"
-                  component="h2"
-                  sx={{
-                    color: theme.palette.primary.main,
-                    fontWeight: 600,
-                    mb: 1,
-                    fontSize: '1rem',
-                  }}
-                >
-                  {product.title}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="text.secondary"
-                  sx={{ mb: 1, minHeight: 30, fontSize: '0.95rem' }}
-                >
-                  {product.description}
-                </Typography>
-                <Typography
-                  variant="body2"
-                  color="primary"
-                  sx={{ fontWeight: 700, mb: 1, fontSize: '0.95rem' }}
-                >
-                  {product.price}
-                </Typography>
-              </CardContent>
             </Card>
           ))}
         </Box>
@@ -214,28 +494,48 @@ const LandingPage = () => {
       </Container>
 
       {/* Enquiry Form Section */}
-      <Container maxWidth="md" sx={{ my: 8 }}>
+      <Container maxWidth={false} sx={{ my: 12, px: { xs: 2, md: 4 } }}>
         <Paper
-          elevation={6}
+          elevation={0}
           sx={{
-            background: darkBg,
-            color: '#fff',
-            p: { xs: 3, md: 6 },
-            borderRadius: 4,
-            boxShadow: '0 8px 32px rgba(0,0,0,0.18)',
+            background: '#EADFCF',
+            borderRadius: 2,
+            boxShadow: '0 4px 20px rgba(123, 86, 48, 0.1)',
+            maxWidth: '700px',
+            mx: 'auto',
+            p: 0,
+            overflow: 'hidden',
           }}
         >
-          <Typography
-            variant="h4"
-            component="h2"
-            align="center"
-            sx={{ fontWeight: 700, mb: 4, letterSpacing: 1 }}
+          <Box
+            sx={{
+              p: { xs: 3, md: 6 },
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
           >
-            LET'S WORK TOGETHER
-          </Typography>
-          <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+            <Typography
+              variant="h3"
+              component="h2"
+              sx={{
+                color: '#17372D',
+                fontWeight: 700,
+                mb: 4,
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: { xs: '2rem', md: '2.5rem' },
+                textAlign: 'center',
+              }}
+            >
+              Tell Us What You Need
+            </Typography>
+            <form onSubmit={handleSubmit}>
+              <Box sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: 3, 
+                width: '100%',
+              }}>
                 <TextField
                   required
                   fullWidth
@@ -243,30 +543,33 @@ const LandingPage = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  variant="standard"
-                  InputProps={{
-                    style: { color: '#fff', fontWeight: 500 },
-                    disableUnderline: false,
+                  variant="outlined"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#fff',
+                      boxShadow: '0 2px 8px rgba(123, 86, 48, 0.08)',
+                      '& fieldset': {
+                        borderColor: 'rgba(123, 86, 48, 0.2)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'rgba(123, 86, 48, 0.4)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#17372D',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#17372D',
+                      fontFamily: 'Poppins, sans-serif',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: '#17372D',
+                      fontFamily: 'Poppins, sans-serif',
+                      py: 1.5,
+                    },
                   }}
-                  InputLabelProps={{ style: { color: '#bbb', letterSpacing: 1 } }}
-                  sx={{ mb: 2, '& .MuiInput-underline:before': { borderBottomColor: '#555' }, '& .MuiInput-underline:after': { borderBottomColor: theme.palette.secondary.main } }}
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Phone Number"
-                  name="phone"
-                  value={formData.phone}
-                  onChange={handleInputChange}
-                  variant="standard"
-                  InputProps={{ style: { color: '#fff', fontWeight: 500 } }}
-                  InputLabelProps={{ style: { color: '#bbb', letterSpacing: 1 } }}
-                  sx={{ mb: 2, '& .MuiInput-underline:before': { borderBottomColor: '#555' }, '& .MuiInput-underline:after': { borderBottomColor: theme.palette.secondary.main } }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -275,51 +578,130 @@ const LandingPage = () => {
                   type="email"
                   value={formData.email}
                   onChange={handleInputChange}
-                  variant="standard"
-                  InputProps={{ style: { color: '#fff', fontWeight: 500 } }}
-                  InputLabelProps={{ style: { color: '#bbb', letterSpacing: 1 } }}
-                  sx={{ mb: 2, '& .MuiInput-underline:before': { borderBottomColor: '#555' }, '& .MuiInput-underline:after': { borderBottomColor: theme.palette.secondary.main } }}
+                  variant="outlined"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#fff',
+                      boxShadow: '0 2px 8px rgba(123, 86, 48, 0.08)',
+                      '& fieldset': {
+                        borderColor: 'rgba(123, 86, 48, 0.2)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'rgba(123, 86, 48, 0.4)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#17372D',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#17372D',
+                      fontFamily: 'Poppins, sans-serif',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: '#17372D',
+                      fontFamily: 'Poppins, sans-serif',
+                      py: 1.5,
+                    },
+                  }}
                 />
-              </Grid>
-              <Grid item xs={12} sm={6}>
                 <TextField
+                  required
                   fullWidth
-                  label="Reason for Enquiry"
+                  label="Mobile Number"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleInputChange}
+                  variant="outlined"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#fff',
+                      boxShadow: '0 2px 8px rgba(123, 86, 48, 0.08)',
+                      '& fieldset': {
+                        borderColor: 'rgba(123, 86, 48, 0.2)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'rgba(123, 86, 48, 0.4)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#17372D',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#17372D',
+                      fontFamily: 'Poppins, sans-serif',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: '#17372D',
+                      fontFamily: 'Poppins, sans-serif',
+                      py: 1.5,
+                    },
+                  }}
+                />
+                <TextField
+                  required
+                  fullWidth
+                  label="Enquiry"
                   name="reason"
                   value={formData.reason}
                   onChange={handleInputChange}
-                  variant="standard"
-                  InputProps={{ style: { color: '#fff', fontWeight: 500 } }}
-                  InputLabelProps={{ style: { color: '#bbb', letterSpacing: 1 } }}
-                  sx={{ mb: 2, '& .MuiInput-underline:before': { borderBottomColor: '#555' }, '& .MuiInput-underline:after': { borderBottomColor: theme.palette.secondary.main } }}
+                  multiline
+                  rows={4}
+                  variant="outlined"
+                  sx={{
+                    '& .MuiOutlinedInput-root': {
+                      borderRadius: 2,
+                      backgroundColor: '#fff',
+                      boxShadow: '0 2px 8px rgba(123, 86, 48, 0.08)',
+                      '& fieldset': {
+                        borderColor: 'rgba(123, 86, 48, 0.2)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'rgba(123, 86, 48, 0.4)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: '#17372D',
+                      },
+                    },
+                    '& .MuiInputLabel-root': {
+                      color: '#17372D',
+                      fontFamily: 'Poppins, sans-serif',
+                    },
+                    '& .MuiInputBase-input': {
+                      color: '#17372D',
+                      fontFamily: 'Poppins, sans-serif',
+                      py: 1.5,
+                    },
+                  }}
                 />
-              </Grid>
-              <Grid item xs={12}>
                 <Button
                   type="submit"
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   size="large"
-                  fullWidth
                   sx={{
-                    mt: 2,
-                    fontWeight: 700,
-                    fontSize: 18,
-                    letterSpacing: 2,
-                    bgcolor: theme.palette.secondary.main,
-                    color: '#fff',
-                    borderRadius: 2,
                     py: 2,
+                    px: 4,
+                    borderRadius: 2,
+                    fontFamily: 'Poppins, sans-serif',
+                    fontWeight: 600,
+                    fontSize: '1.1rem',
+                    boxShadow: '0 4px 12px rgba(123, 86, 48, 0.15)',
                     '&:hover': {
-                      bgcolor: theme.palette.secondary.dark,
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 6px 16px rgba(123, 86, 48, 0.2)',
                     },
+                    transition: 'all 0.3s ease',
+                    maxWidth: '300px',
+                    mx: 'auto',
                   }}
                 >
-                  SUBMIT DETAILS
+                  Submit Your Enquiry
                 </Button>
-              </Grid>
-            </Grid>
-          </form>
+              </Box>
+            </form>
+          </Box>
         </Paper>
       </Container>
     </div>

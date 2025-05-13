@@ -12,7 +12,7 @@ import AdminPage from './pages/AdminPage';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#8C6E53', // Warm brown
+      main: '#A18265', // Warm brown
       light: '#BFA380',
       dark: '#5C4631',
       contrastText: '#fff',
